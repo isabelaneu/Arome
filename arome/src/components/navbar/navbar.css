@@ -1,0 +1,61 @@
+.navbar{
+    display: flex;
+    justify-content: space-between;     
+}
+
+.menu{
+    display: flex;
+    width: 50%;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.3125rem;
+    flex-shrink: 0;
+    margin-top: 20px;
+}
+
+.menu>svg{
+    cursor: pointer;
+}
+
+.logo{
+    display: flex;
+    width: 50%;
+    height: 2rem;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.3125rem;
+    flex-shrink: 0;
+    margin-top: 27px;
+
+}
+
+.textoHome{
+    text-align: center;
+    font-family: Italiana;
+    font-size: 1.300rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.textoHome:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.tituloHome{
+    text-align: center;
+    font-family: Italiana;
+    font-size: 3.031vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.icon{
+    width: 4.844vw;
+    height: 10.6vhvh;
+    flex-shrink: 0;
+    aspect-ratio: 93/106;
+}
