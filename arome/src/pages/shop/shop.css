@@ -1,0 +1,83 @@
+*{
+    margin: 0;
+}
+.fundoShop{
+    background: linear-gradient(179deg, #FCB5A6 9.83%, #E3CCC7 35.84%, #FCB5A6 71.75%);
+    width: 100%;
+    height: 200vh;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.tituloShop{
+    width: 26.5rem;
+    color: #59291B;
+    font-family: Italiana;
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal; 
+    margin-left: 25px;
+}
+
+.viewCardShop{
+  display: flex ;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.cardShop{
+    border-radius: 1.6875rem;
+    background: #E6E1DB;
+    width: 19rem;
+    height: 27.4375rem;
+    flex-shrink: 0;
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    
+}
+
+.imgCardShop{
+    background: lightgray -18.613px -122.399px / 115.607% 163.468% no-repeat;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    width: 14rem;
+    height: 15.25rem;
+    flex-shrink: 0;
+    aspect-ratio: 115/122;
+    margin: 20px;
+}
+
+.textoCardShop {
+    color: #59291B;
+    font-family: "Poppins";
+    font-size: 15px;
+    font-weight: 5=300;
+    line-height: normal;
+    text-align: center;
+    display: flex;
+    width: 20rem;
+    height: 2.5625rem;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.svgCardShop{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 5px;
+}
+
+#lavanda:hover{
+    background-image: url("https://i.pinimg.com/736x/2d/be/1d/2dbe1d0955faf8e47c5e31cad1141245.jpg");
+}
+
+.selecionar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
