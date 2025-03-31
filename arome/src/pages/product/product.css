@@ -1,7 +1,9 @@
-.fundoPorduct{
+.fundoProduct{
+    background-color:#E6E1DB ;
     width: 100%;
     height: 200vh;
     flex-shrink: 0;
+    
 }
 
 .product{

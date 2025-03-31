@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import "./singup.css"; // Corrigido o nome do arquivo para "signup.css"
+import "./singup.css"; 
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/navbar/navbar";
+import icon from "../../assets/icon.png";
+
 
 function Signup() {
 
@@ -47,7 +48,10 @@ function Signup() {
 
     return (
         <div className="fundoSingup">
-            <Navbar cor={"#59291B"} />
+            <div className="logo" onClick={() => navigate("/")}>
+                <img src={icon} alt="Logo AROME" className="icon" />
+                <p className="tituloHome" style={{ color: '#59291B' }}>AROME</p>
+            </div>
             <br /><br />
 
             <div className="conteudoSingup">
@@ -109,7 +113,7 @@ function Signup() {
                                 required
                             />
                         </div>
-                        <button type="submit">Cadastrar</button>
+                        <button type="submit" onClick={() => navigate("/home")}>Cadastrar</button>
                     </form>
                 </div>
     
