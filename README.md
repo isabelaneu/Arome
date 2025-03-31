@@ -69,10 +69,10 @@ Arome/
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/seu-repositorio.git
+git clone https://github.com/seu-usuario/seu-repositorio.git](https://github.com/isabelaneu/Arome.git
 
 # Navegue até o diretório do projeto
-cd seu-repositorio
+cd arome
 
 # Instale as dependências
 npm install
@@ -91,21 +91,22 @@ A aplicação estará disponível em: `http://localhost:3000`
 
 ## ✅ **Funcionalidades**
 
-- [x] Funcionalidade 1 - Explicação
-- [x] Funcionalidade 2 - Explicação
-- [ ] Funcionalidade 3 - Em desenvolvimento
+- [x] E-comerce de velas aromáticas naturais
+- [x] Gerenciameno de produtos e clientes 
+- [x] Pagamento via cartão ou pix 
 
 ---
 
 ## 🔥 **Desafios Encontrados e Soluções**
 
-Explique problemas que você enfrentou durante o desenvolvimento e como resolveu.
+Tivemos que aprender novas tecnologias que nunca tinhamos usado, isso gerou um certo desafio, pois não sabiamos como começar.
+Porém pesquisamos na internet e em documentações e conseguimos desenvolver o projeto com excelência.
 
 ---
 
 ## 📚 **Aprendizados**
 
-Mencione o que você aprendeu ou melhorou com o projeto.
+Tivemos que desenvolver mais autonomia e organização em relação a criação e o desenvolvimento de um novo projeto.
 
 ---
 
@@ -115,29 +116,8 @@ Se você fez deploy, explique como foi feito (Vercel, Netlify, AWS, etc.).
 
 ---
 
-## 🤝 **Contribuição**
-
-Contribuições são sempre bem-vindas!  
-Para contribuir:  
-1. Faça um fork do projeto.  
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`).  
-3. Faça commit das suas mudanças (`git commit -m 'Add some AmazingFeature'`).  
-4. Envie para a branch (`git push origin feature/AmazingFeature`).  
-5. Abra um Pull Request.  
-
----
-
 ## 📜 **Licença**
 
 Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-## 📧 **Contato**
-
-Seu nome - [seu e-mail](mailto:seu@email.com) - [Seu LinkedIn](https://linkedin.com/in/seu-usuario)  
-
-Projeto Link: [https://github.com/seu-usuario/seu-repositorio](https://github.com/seu-usuario/seu-repositorio)
-```
 
 ---
