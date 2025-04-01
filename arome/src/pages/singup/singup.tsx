@@ -6,7 +6,7 @@ import icon from "../../assets/icon.png";
 
 function Signup() {
 
-    const basePath = "/shop"; // Altere conforme necessário
+    const basePath = "/shop"; 
     const navigate = useNavigate();
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
@@ -29,14 +29,14 @@ function Signup() {
         const response = await fetch("http://localhost:8080/register", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json", // Define o tipo de conteúdo como JSON
+                "Content-Type": "application/json", 
             },
-            body: JSON.stringify(cliente), // Envia os dados do cliente em formato JSON
+            body: JSON.stringify(cliente), 
         });
 
         if (response.ok) {
-            const data = await response.json(); // Obtemos a resposta do servidor
-            alert(data.message); // Exibe a mensagem de sucesso do backend
+            const data = await response.json(); 
+            alert(data.message); 
         } else {
             throw new Error("Erro ao cadastrar cliente");
         }

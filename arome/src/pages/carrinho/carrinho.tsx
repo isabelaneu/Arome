@@ -1,7 +1,6 @@
 import React from "react";
 import NavbarComponent from "../../components/navbar/navbar";
 import "./carrinho.css"
-import Footer from "../../components/footer/footer";
 import { useNavigate } from "react-router-dom";
 
 

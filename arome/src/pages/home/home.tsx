@@ -1,6 +1,5 @@
 import React from "react";
 import "./home.css"
-import arrowDonw from "../../assets/arrow-down-drop-circle.svg"
 import Footer from "../../components/footer/footer";
 import Navbar from "../../components/navbar/navbar";
 

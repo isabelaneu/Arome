@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import qrcode from '../../assets/image.png';
 
 function Payment() {
+    
     const [paymentMethod, setPaymentMethod] = useState("credito");
     const [cardholderName, setCardholderName] = useState("");
     const [cardNumber, setCardNumber] = useState("");
@@ -53,7 +54,6 @@ function Payment() {
                         </select>
                     </div>
 
-                    {/* Formulário Condicional */}
                     {(paymentMethod === "credito" || paymentMethod === "debito") && (
                         <>
                             <div className="form-group">
@@ -126,7 +126,6 @@ function Payment() {
                 </form>
             </div>
 
-            {/* Modal de conclusão */}
             {modalVisible && (
                 <div className="modal">
                     <div className="modal-content">

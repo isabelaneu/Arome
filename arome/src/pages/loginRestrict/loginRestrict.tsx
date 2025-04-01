@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./loginRestrict.css"; 
 import { useNavigate } from "react-router-dom";
-import icon from "../../assets/icon.png";
 import Navbar from "../../components/navbar/navbar";
 
 function LoginRestrict() {
