@@ -1,11 +1,4 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
+.containerPay {
     max-width: 400px;
     margin: 50px auto;
     padding: 20px;
@@ -18,6 +11,10 @@ h1 {
     font-family: "Italiana";
     text-align: center;
     margin-bottom: 20px;
+}
+
+.backToCarrinho{
+    padding: 20px;
 }
 
 .form-group {
@@ -53,5 +50,37 @@ button:hover {
 
 #qrcode {
     width: 100%;
+    margin-top: 10px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+}
+
+.modal img {
+    width: 70%;
+    height: auto;
+}
+
+.modal p {
+    font-family: Poppins;
+    color: #59291B;
     margin-top: 10px;
 }

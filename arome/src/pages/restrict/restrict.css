@@ -1,0 +1,38 @@
+
+
+main {
+    padding: 20px;
+}
+
+
+section {
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-height: 10vh;
+    transition: 0.1s;
+}
+
+/* section:hover{
+    transition: 1s;
+    max-height: 100%;
+} */
+
+.opcao{
+    display: flex;
+    justify-content: space-between;
+}
+
+div>p{
+    font-family: 'Poppins';
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: #333;
+    color: #fff;
+}

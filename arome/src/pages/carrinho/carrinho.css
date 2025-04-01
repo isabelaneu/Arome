@@ -9,6 +9,10 @@
     flex-shrink: 0;
 }
 
+.backToShop{
+    padding: 20px;
+}
+
 .cardCompra{
     width: 90vw;
     display: flex;

@@ -30,20 +30,18 @@ function Product(){
                     <p style={{paddingBottom:5, fontSize:20}}>Adicione ao carrinho!</p>  
 
                     <div className="quantidade">
-                        {/* + */}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="#59291B"/>
-                        </svg>
-                        <p>1</p>
                         {/* - */}
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
                             <path d="M19.0544 13.3947H5.05444V11.3947H19.0544V13.3947Z" fill="#59291B"/>
                         </svg>
+                        <p>2</p>
+                        {/* + */}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="#59291B"/>
+                        </svg>
                     </div>
                 </div>
             </div>
-            <br /><br /><br /><br /><br />
-
         </div>
     )
 }

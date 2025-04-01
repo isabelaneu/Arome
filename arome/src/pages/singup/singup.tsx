@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import "./singup.css"; // Corrigido o nome do arquivo para "signup.css"
+import "./singup.css"; 
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/navbar/navbar";
+import icon from "../../assets/icon.png";
+
 
 function Signup() {
 
-    const basePath = "/shop"; // Altere conforme necessário
+    const basePath = "/shop"; 
     const navigate = useNavigate();
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
@@ -28,14 +29,14 @@ function Signup() {
         const response = await fetch("http://localhost:8080/register", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json", // Define o tipo de conteúdo como JSON
+                "Content-Type": "application/json", 
             },
-            body: JSON.stringify(cliente), // Envia os dados do cliente em formato JSON
+            body: JSON.stringify(cliente), 
         });
 
         if (response.ok) {
-            const data = await response.json(); // Obtemos a resposta do servidor
-            alert(data.message); // Exibe a mensagem de sucesso do backend
+            const data = await response.json(); 
+            alert(data.message); 
         } else {
             throw new Error("Erro ao cadastrar cliente");
         }
@@ -47,7 +48,10 @@ function Signup() {
 
     return (
         <div className="fundoSingup">
-            <Navbar cor={"#59291B"} />
+            <div className="logo" onClick={() => navigate("/")}>
+                <img src={icon} alt="Logo AROME" className="icon" />
+                <p className="tituloHome" style={{ color: '#59291B' }}>AROME</p>
+            </div>
             <br /><br />
 
             <div className="conteudoSingup">
@@ -109,7 +113,7 @@ function Signup() {
                                 required
                             />
                         </div>
-                        <button type="submit">Cadastrar</button>
+                        <button type="submit" onClick={() => navigate("/home")}>Cadastrar</button>
                     </form>
                 </div>
     

@@ -12,6 +12,7 @@
     gap: 1.3125rem;
     flex-shrink: 0;
     margin-top: 20px;
+    cursor: pointer;
 }
 
 .menu>svg{
@@ -30,20 +31,30 @@
 
 }
 
-.textoHome{
+.textoHome {
     text-align: center;
-    font-family: Italiana;
-    font-size: 1.300rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    text-decoration: none;
+    font-family: Italiana, sans-serif; 
+    font-size: 1.3rem;
+    text-decoration: none; 
+    position: relative;
 }
 
-.textoHome:hover{
-    text-decoration: underline;
+.textoHome::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #59291B;
+    transition: width 0.3s;
+}
+
+.textoHome:hover::after {
+    width: 100%;
     cursor: pointer;
 }
+
 
 .tituloHome{
     text-align: center;
@@ -58,4 +69,8 @@
     height: 10.6vhvh;
     flex-shrink: 0;
     aspect-ratio: 93/106;
+}
+
+.areaRestrita{
+    width: 15%;
 }
