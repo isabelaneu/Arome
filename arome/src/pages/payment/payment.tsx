@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PaymentButton from "./paymentButton";
 import "./payment.css";
 import Navbar from "../../components/navbar/navbar";
 
@@ -9,12 +10,6 @@ function Payment() {
     const [expiryDate, setExpiryDate] = useState("");
     const [cvv, setCvv] = useState("");
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     // Aqui você pode adicionar a lógica para processar o pagamento
-    //     console.log("Dados do pagamento:", { cardholderName, cardNumber, expiryDate, cvv });
-    // };
-
     return (
         <div>
             <Navbar cor={"#59291B"} />
@@ -22,8 +17,7 @@ function Payment() {
 
             <div className="container">
                 <h1>Pagamento</h1>
-                {/* onSubmit={handleSubmit} */}
-                <form >
+                <form>
                     <div className="form-group">
                         <label htmlFor="payment-method">Método de Pagamento</label>
                         <select
@@ -88,6 +82,7 @@ function Payment() {
                     )}
 
                     <button type="submit">Pagar</button>
+
                 </form>
             </div>
         </div>
