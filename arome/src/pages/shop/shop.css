@@ -84,3 +84,28 @@
     font-family: 'Poppins';
     color: #59291B;
 }
+
+.modal-content{
+    display: block;
+    margin: auto;
+    margin-top: 15%;
+    background-color: #E67B6E;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 120px;
+}
+
+.modal-content>img {
+    width: 20%;
+    height: auto;
+}
+
+.modal-content-gif{
+    margin-top: 5%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 120px;
+}

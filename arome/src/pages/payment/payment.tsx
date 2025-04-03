@@ -129,7 +129,7 @@ function Payment() {
             {modalVisible && (
                 <div className="modal">
                     <div className="modal-content">
-                        <img src="https://media.tenor.com/tVQbHgFJ1t4AAAAj/confirmado.gif" alt="Concluído" />
+                        <img src="https://media.tenor.com/tVQbHgFJ1t4AAAAj/confirmado.gif" alt="Concluído" className="modal>p"/>
                         <p>Pagamento Concluído!</p>
                     </div>
                 </div>

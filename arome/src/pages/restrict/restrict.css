@@ -16,11 +16,6 @@ section {
     transition: 0.1s;
 }
 
-/* section:hover{
-    transition: 1s;
-    max-height: 100%;
-} */
-
 .opcao{
     display: flex;
     justify-content: space-between;
