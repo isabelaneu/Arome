@@ -6,7 +6,7 @@ const PaymentButton: React.FC = () => {
   useEffect(() => {
     const fetchUltimoPedido = async () => {
       try {
-        const response = await fetch("http://localhost:8080/"); // add endpoint p buscar o ultimo pedido adicionado
+        const response = await fetch("https://arome-backend-udit.onrender.com/pedidos/ultimoPedido"); 
         if (!response.ok) {
           throw new Error("Erro ao buscar pedido");
         }
@@ -26,7 +26,7 @@ const PaymentButton: React.FC = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:8080//${idPedido}`, // enpoint de busca do pedido
+        `https://arome-backend-udit.onrender.com/pedidos/buscar/{idPedido}`,
         {
           method: "GET",
           headers: {
@@ -53,7 +53,7 @@ const PaymentButton: React.FC = () => {
   };
 
   return (
-    <button onClick={handlePagamento} className="bg-blue-500 text-white p-2 rounded" disabled={!idPedido}>
+    <button onClick={handlePagamento} className="bg-pink" disabled={!idPedido}>
       Pagar e Gerar Nota Fiscal
     </button>
   );

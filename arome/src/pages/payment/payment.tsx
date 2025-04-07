@@ -81,7 +81,7 @@ function Payment() {
                         </div>
                     )}
 
-                    <button type="submit">Pagar</button>
+                        <PaymentButton />
 
                 </form>
             </div>
