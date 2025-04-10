@@ -9,6 +9,10 @@
     flex-shrink: 0;
 }
 
+.backToShop{
+    padding: 20px;
+}
+
 .cardCompra{
     width: 90vw;
     display: flex;
@@ -38,7 +42,7 @@
 
 .quantidade{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     border: 1px solid black;
     background-color: #E6E1DB;

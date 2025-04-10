@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -9,21 +8,30 @@ import Carrinho from './pages/carrinho/carrinho';
 import Product from './pages/product/product';
 import Singup from './pages/singup/singup';
 import Payment from './pages/payment/payment';
+import LoginRestrict from './pages/loginRestrict/loginRestrict';
+import Restrict from './pages/restrict/restrict';
+import { CarrinhoProvider } from './contexts/carinho.contexts';
+import Login from './pages/login/login';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path='/carrinho' element={<Carrinho></Carrinho>}/>
-        <Route path='/product' element={<Product></Product>}/>
-        <Route path='/singup' element={<Singup></Singup>}/>
-        <Route path='/payment' element={<Payment></Payment>}/>
-      </Routes>
-    </BrowserRouter>
+    <CarrinhoProvider> 
+      <BrowserRouter>
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path='/carrinho' element={<Carrinho />} />
+          <Route path='/product/:id' element={<Product />} />
+          <Route path='/' element={<Singup />} />
+          <Route path='/payment' element={<Payment />} />
+          <Route path='/loginRestrict' element={<LoginRestrict />} />
+          <Route path='/restrict' element={<Restrict />} />
+          <Route path='/login' element={<Login></Login>} />
+
+        </Routes>
+      </BrowserRouter>
+    </CarrinhoProvider>
   );
 }
-
 
 export default App;

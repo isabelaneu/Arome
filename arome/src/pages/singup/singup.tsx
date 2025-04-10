@@ -1,60 +1,81 @@
-import React, { useState } from "react";
-import "./singup.css"; // Corrigido o nome do arquivo para "signup.css"
+import React, { useState, useEffect } from "react";
+import "./singup.css"; 
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/navbar/navbar";
+import icon from "../../assets/icon.png";
 
 function Signup() {
 
-    const basePath = "/shop"; // Altere conforme necessário
+    const basePath = "/shop"; 
     const navigate = useNavigate();
+    const [id, setId] = useState('');
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [dataNascimento, setDataNascimento] = useState('');
     const [cpf, setCpf] = useState('');
     const [senha, setSenha] = useState('');
 
+    useEffect(() => {
+        const cliente = sessionStorage.getItem("cliente");
+        if (cliente) {
+            navigate("/home");
+        }
+    }, [navigate]);
+
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
+
             
-            const cliente = {
-                nome,
-                email,
-                cpf,
-                senha,
-                data_nascimento: dataNascimento
-            };
+        const cliente = { id, nome, email, cpf, senha, data_nascimento: dataNascimento };
+   
+        console.log(cliente)
 
-    try {
-        const response = await fetch("http://localhost:8080/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json", // Define o tipo de conteúdo como JSON
-            },
-            body: JSON.stringify(cliente), // Envia os dados do cliente em formato JSON
-        });
-
-        if (response.ok) {
-            const data = await response.json(); // Obtemos a resposta do servidor
-            alert(data.message); // Exibe a mensagem de sucesso do backend
-        } else {
-            throw new Error("Erro ao cadastrar cliente");
+        try {
+            const response = await fetch("https://arome-backend-udit.onrender.com/clientes/adicionar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json", 
+                },
+                body: JSON.stringify(cliente), 
+            });
+        
+            const responseText = await response.text();
+            console.log("Resposta do backend:", responseText);
+        
+            if (response.ok) {
+                alert(responseText);
+                document.cookie = `user=${JSON.stringify(cliente)}; path=/; max-age=${7 * 24 * 60 * 60}`
+                navigate("/home");
+            } else {
+                if (responseText.includes("Cliente com este e-mail já existe")) {
+                    alert(responseText);
+        
+                    sessionStorage.setItem("cliente", JSON.stringify(cliente));
+        
+                    navigate("/home");
+                } else {
+                    alert("Erro: " + responseText);
+            }
         }
     } catch (error) {
         console.error("Erro ao cadastrar cliente", error);
-        alert("Erro ao cadastrar cliente"); // Exibe mensagem de erro caso a requisição falhe
-        }
+        alert("Erro ao cadastrar cliente"); 
+    }
+        
+        
     };
 
     return (
         <div className="fundoSingup">
-            <Navbar cor={"#59291B"} />
+            <div className="logo" onClick={() => navigate("/")}>
+                <img src={icon} alt="Logo AROME" className="icon" />
+                <p className="tituloHome" style={{ color: '#59291B' }}>AROME</p>
+            </div>
             <br /><br />
 
             <div className="conteudoSingup">
                 <div className="container">
                     <h1>Cadastro</h1>
-                    {/* onSubmit={handleSubmit} */}
-                    <form >
+                    <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="nome">Nome:</label>
                             <input
@@ -91,7 +112,7 @@ function Signup() {
                             <label htmlFor="cpf">Cpf:</label>
                             <input
                                 placeholder="Digite seu CPF"
-                                type="number"
+                                type="text"
                                 id="cpf"
                                 value={cpf}
                                 onChange={(e) => setCpf(e.target.value)}
@@ -110,6 +131,7 @@ function Signup() {
                             />
                         </div>
                         <button type="submit">Cadastrar</button>
+                        <a href="" style={{fontFamily:"Poppins", color:"#59291B", textAlign:"center", margin:"30%"}} onClick={() => navigate("/login")}>Já sou cadastrado!</a>
                     </form>
                 </div>
     
@@ -121,4 +143,4 @@ function Signup() {
     );
 }
 
-export default Signup
+export default Signup;

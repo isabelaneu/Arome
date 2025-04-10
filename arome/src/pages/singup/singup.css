@@ -1,20 +1,21 @@
 .fundoSingup{
     background-color: #FCB5A6;
+    height:100%;
 }
 
 .conteudoSingup{
     display: flex;
     justify-content: space-evenly;
-    margin: auto;
+    
 }
 
 .container {
     width: 40vw;
-    padding: 30px;
     background: white;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
+    max-width: 400px;
+    padding: 20px;
 }
 
 h1 {

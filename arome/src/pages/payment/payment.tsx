@@ -2,22 +2,81 @@ import React, { useState } from "react";
 import PaymentButton from "./paymentButton";
 import "./payment.css";
 import Navbar from "../../components/navbar/navbar";
+import { useNavigate } from "react-router-dom";
+import { useCarrinho } from "../../contexts/carinho.contexts";
+import Cookies from "js-cookie";
+import qrcode from '../../assets/image.png';
 
 function Payment() {
+    const { carrinho, limparCarrinho } = useCarrinho(); 
+
     const [paymentMethod, setPaymentMethod] = useState("credito");
     const [cardholderName, setCardholderName] = useState("");
     const [cardNumber, setCardNumber] = useState("");
     const [expiryDate, setExpiryDate] = useState("");
     const [cvv, setCvv] = useState("");
+    const [parcelas, setParcelas] = useState("");
+    const [modalVisible, setModalVisible] = useState(false);
+    const navigate = useNavigate();
+    const totalCompra = carrinho.reduce((acc, prod) => acc + prod.preco * prod.quantidade, 0);
 
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+    
+        try {
+            const cliente = JSON.parse(Cookies.get("user") || "{}");
+            const dataAtual = new Date().toISOString();
+
+    
+            for (const produto of carrinho) {
+                const pedido = {
+                    id_cliente: cliente.id,
+                    id_produto: produto.id,
+                    valor_total: produto.preco,
+                    pedido_feito: false
+                };
+            
+                const response = await fetch("https://arome-backend-1-4j41.onrender.com/pedidos/adicionar", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(pedido)
+                });
+            
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("Erro ao registrar pedido:", errorData);
+                    throw new Error("Erro ao registrar pedido");
+                }
+            
+                console.log("Pedido enviado com sucesso:", pedido); 
+            }
+                        
+            setModalVisible(true);
+            const historicoComData = carrinho.map(produto => ({
+                ...produto,
+                data: dataAtual
+            }));
+            localStorage.setItem("historicoCarrinho", JSON.stringify(historicoComData));
+          
     return (
         <div>
             <Navbar cor={"#59291B"} />
             <br /><br />
 
-            <div className="container">
+            <div className="backToCarrinho" style={{ display: 'flex' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none" onClick={() => navigate("/carrinho")} style={{ cursor: "pointer" }}>
+                    <path d="M20.9208 11.2238V13.2238H8.92081L14.4208 18.7238L13.0008 20.1438L5.08081 12.2238L13.0008 4.30377L14.4208 5.72377L8.92081 11.2238H20.9208Z" fill="#59291B" />
+                </svg>
+                <p style={{ fontFamily: "Poppins", color: '#59291B', cursor: 'pointer' }} onClick={() => navigate("/carrinho")}>
+                    Voltar para o carrinho
+                </p>
+            </div>
+
+            <div className="containerPay">
                 <h1>Pagamento</h1>
-                <form>
                     <div className="form-group">
                         <label htmlFor="payment-method">Método de Pagamento</label>
                         <select
@@ -31,7 +90,7 @@ function Payment() {
                         </select>
                     </div>
 
-                    {paymentMethod !== "pix" ? (
+                    {(paymentMethod === "credito" || paymentMethod === "debito") && (
                         <>
                             <div className="form-group">
                                 <label htmlFor="cardholder-name">Nome do Titular do Cartão</label>
@@ -73,11 +132,29 @@ function Payment() {
                                     required
                                 />
                             </div>
+
+                            {paymentMethod === "credito" && (
+                                <div className="form-group">
+                                    <label htmlFor="parcelas">Quantidade de Parcelas</label>
+                                    <select
+                                        id="parcelas"
+                                        value={parcelas}
+                                        onChange={(e) => setParcelas(e.target.value)}
+                                    >
+                                        <option value="1">1x</option>
+                                        <option value="2">2x</option>
+                                        <option value="3">3x</option>
+                                        <option value="4">4x</option>
+                                    </select>
+                                </div>
+                            )}
                         </>
-                    ) : (
+                    )}
+
+                    {paymentMethod === "pix" && (
                         <div className="form-group">
                             <label htmlFor="qrcode">Escaneie o QR Code para pagamento via Pix</label>
-                            <img src="link-do-seu-qrcode-aqui" alt="QR Code" id="qrcode" />
+                            <img src={qrcode} alt="QR Code" id="qrcode" />
                         </div>
                     )}
 
@@ -85,6 +162,35 @@ function Payment() {
 
                 </form>
             </div>
+
+            {modalVisible && (
+            <div className="modal-pay">
+                <div className="modal-content-pay">
+                    <h1>Cupom Fiscal</h1>
+                    
+                    <p><strong>Comprador:</strong> {JSON.parse(Cookies.get("user") || "{}").nome}</p>
+                    <p><strong>Data:</strong> {new Date().toLocaleString()}</p>
+                    <hr />
+
+                    {carrinho.map((produto, index) => (
+                        <div key={index} style={{ marginBottom: "10px" }}>
+                            <p><strong>Produto:</strong> {produto.nome}</p>
+                            <p><strong>Quantidade:</strong> {produto.quantidade}</p>
+                            <p><strong>Preço Unitário:</strong> R$ {produto.preco.toFixed(2)}</p>
+                            <p><strong>Total:</strong> R$ {(produto.preco * produto.quantidade).toFixed(2)}</p>
+                            <hr />
+                        </div>
+                    ))}
+
+                    <h3 style={{ marginTop: "20px" }}>
+                        Valor Total: R$ {totalCompra.toFixed(2)}
+                    </h3>
+
+                    <img src="https://media.tenor.com/tVQbHgFJ1t4AAAAj/confirmado.gif" alt="Concluído" className="modal>p" />
+                    <p>Pagamento Concluído!</p>
+                </div>
+            </div>
+        )}
         </div>
     );
 }
