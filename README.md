@@ -1,14 +1,15 @@
 # 🌟 Arome
 
 Um aplicativo web desenvolvido em React sobre um e-comerce de velas aromáticas, além disso conta uma área exclusiva para os funcionários, onde é possível regar um histórico de vendas, 
-gerenciamento de clientes e estoque.
+gerenciamento de clientes e estoque.\
+INTEGRANTES : Clara Bartolini, Brenda Soriano e Isabela Neu - 2G
 
 ---
 
 ## 🚀 **Demonstração**
 
-Adicione aqui um link para o deploy do projeto, se houver.  
-Por exemplo: [Projeto Hospedado](https://seuprojeto.com)  
+ link para o deploy do projeto: 
+[Projeto Hospedado](https://seuprojeto.com)  
 
 ---
 
@@ -56,8 +57,11 @@ Arome/
 ├── backend/
 ├── LICENSE
 ```
+## 💻 **Repositório Backend**
+[Arome-Backend](https://github.com/clarabartolini/Arome-Backend.git)
 
----
+## 📥 **Modelagem do Banco**
+<img src="https://github.com/user-attachments/assets/27152895-f029-4fe4-a21a-068588d32a62" alt="banco" width="390"/>
 
 ## ⚙️ **Instalação e Execução**
 
@@ -72,7 +76,7 @@ Arome/
 git clone https://github.com/seu-usuario/seu-repositorio.git](https://github.com/isabelaneu/Arome.git
 
 # Navegue até o diretório do projeto
-cd arome
+cd .\Arome\arome\
 
 # Instale as dependências
 npm install
@@ -112,7 +116,7 @@ Tivemos que desenvolver mais autonomia e organização em relação a criação 
 
 ## 📦 **Deploy**
 
-Se você fez deploy, explique como foi feito (Vercel, Netlify, AWS, etc.).
+O deploy do projeto foi feito pelo Render
 
 ---
 
