@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import './restrict.css';
 import Navbar from "../../components/navbar/navbar";
-import { adicionarProduto, listarClientes, removerProduto, atualizarCliente, listarProdutos } from "../../services/restrict.service";
+import { adicionarProduto, listarClientes, removerProduto, atualizarCliente, listarProdutos,obterHistoricoVendas } from "../../services/restrict.service";
+import Cookies from "js-cookie";
+import { useCarrinho } from "../../contexts/carinho.contexts";
 
 
 function Restrict() {
+    const { carrinho } = useCarrinho(); 
     const [activeSection, setActiveSection] = useState<string | null>(null);
     const [removerID, setRemoverID] = useState<string>("");
     const [apiMessage, setApiMessage] = useState<string>("");
     const [clientes, setClientes] = useState<any[]>([]);
     const [produtos, setProdutos] = useState<any[]>([]);
     const [clienteParaAtualizar, setClienteParaAtualizar] = useState<any>(null);
+    const [vendas, setVendas] = useState<any[]>([]);
     const [formData, setFormData] = useState({
         nome: "",
         tipo: "",
@@ -20,55 +24,65 @@ function Restrict() {
         imagem: ""
     });
 
+    const clearApiMessage = (message: string, delay: number = 7000) => {
+        setApiMessage(message);
+        setTimeout(() => {
+            setApiMessage("");
+            setActiveSection(null);
+        }, delay);
+    };
 
-    const toggleSection = (section: string) => {
+    const toggleSection = async (section: string) => {
         const newSection = activeSection === section ? null : section;
         setActiveSection(newSection);
     
-        if (newSection === "vizualizarClientes") {
-            handleSubmitVizualizarClientes();
+        switch (newSection ?? "") {
+            case "vizualizarClientes":
+                await handleSubmitVizualizarClientes();
+                break;
+            case "vizualizarProdutos":
+                await handleSubmitVizualizarProdutos();
+                break;
+            case "historicoVendas":
+                await handleSubmitHistoricoVendas();
+                break;
+            default:
+                break;
         }
-        if (newSection === "vizualizarProdutos") {
-            handleSubmitVizualizarProdutos();
-        }
-    }
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
         setFormData(prev => ({ ...prev, [id]: value }));
     };
 
-  const handleSubmitAdicionar = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-        const message = await adicionarProduto(formData); // Agora recebe o texto da resposta diretamente
-        setApiMessage(message);
-        setFormData({
-            nome: "",
-            tipo: "",
-            preco: "",
-            qntEstoque: "",
-            descricao: "",
-            imagem: ""
-        });
-        setTimeout(() => setActiveSection(null), 7000);
+    const handleSubmitAdicionar = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            const message = await adicionarProduto(formData);
+            clearApiMessage(message);
+            setFormData({
+                nome: "",
+                tipo: "",
+                preco: "",
+                qntEstoque: "",
+                descricao: "",
+                imagem: ""
+            });
         } catch (error) {
-        setApiMessage("Erro ao cadastrar o produto. Tente novamente.");
-        console.error(error);
-    }
+            console.error(error);
+            clearApiMessage("Erro ao cadastrar o produto. Tente novamente.");
+        }
     };
 
     const handleSubmitVizualizarClientes = async () => {
         try {
             const data = await listarClientes();
             setClientes(data);
-            setTimeout(() => {
-                setActiveSection(null);
-                setApiMessage("");
-            }, 7000);
+            clearApiMessage("Clientes carregados com sucesso.");
         } catch (error) {
             console.error(error);
-            setApiMessage("Erro ao carregar clientes.");
+            clearApiMessage("Erro ao carregar clientes.");
         }
     };
 
@@ -76,53 +90,92 @@ function Restrict() {
         try {
             const data = await listarProdutos();
             setProdutos(data);
-            setTimeout(() => {
-                setActiveSection(null);
-                setApiMessage("");
-            }, 7000);
+            clearApiMessage("Produtos carregados com sucesso.");
         } catch (error) {
             console.error(error);
-            setApiMessage("Erro ao carregar produtos.");
+            clearApiMessage("Erro ao carregar produtos.");
         }
     };
 
     const handleSubmitRemover = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const data = await removerProduto(removerID); 
-            setApiMessage("Produto removido com sucesso");
-
+            await removerProduto(removerID);
+            clearApiMessage("Produto removido com sucesso");
             setRemoverID("");
-
-            setTimeout(() => {
-                setActiveSection(null);
-                setApiMessage("");
-            }, 7000);
-
         } catch (error) {
-            setApiMessage("Erro ao remover o produto. Tente novamente.");
             console.error(error);
-
-            setTimeout(() => setApiMessage(""), 7000);
+            clearApiMessage("Erro ao remover o produto. Tente novamente.");
         }
     };
 
     const handleSubmitAtualizar = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!clienteParaAtualizar) return;
-    
+
         try {
             const message = await atualizarCliente(clienteParaAtualizar.id, clienteParaAtualizar);
-            setApiMessage(message);
+            clearApiMessage(message);
             setClienteParaAtualizar(null);
-            setTimeout(() => setActiveSection(null), 7000);
         } catch (error) {
-            setApiMessage("Erro ao atualizar o cliente. Tente novamente.");
             console.error(error);
+            clearApiMessage("Erro ao atualizar o cliente. Tente novamente.");
         }
     };
 
+    interface Produto {
+        id: number;
+        nome: string;
+        quantidade: number;
+        preco: number; 
+    }
+    
+    interface Pedido {
+        id: number;
+        id_cliente: string;
+        id_produto: number;
+        valor_total: number;
+        pedido_feito: boolean;
+        produtos?: Produto[];
+        quantidade?: number;  
+        data?: string;       
+    }
+    
 
+    const handleSubmitHistoricoVendas = async () => {
+        try {
+            const data: Pedido[] = await obterHistoricoVendas();
+            
+            const respostaProdutos = await fetch('https://arome-backend-1-4j41.onrender.com/produtos/listar');
+            const produtosData: Produto[] = await respostaProdutos.json();
+    
+            if (!Array.isArray(produtosData)) {
+                throw new Error("Produtos não retornados corretamente.");
+            }
+    
+            const historicoCarrinho = JSON.parse(localStorage.getItem("historicoCarrinho") || "[]");
+    
+            const vendasComProdutos = data.map((pedido: Pedido) => {
+                const produtosRelacionados = produtosData.filter(produto => produto.id === pedido.id_produto);
+                const produtoNoCarrinho = historicoCarrinho.find((produto: Produto) => produto.id === pedido.id_produto);
+    
+                return {
+                    ...pedido,
+                    produtos: produtosRelacionados,
+                    quantidade: produtoNoCarrinho ? produtoNoCarrinho.quantidade : 0,
+                    data: produtoNoCarrinho ? produtoNoCarrinho.data : "",
+                };
+            });
+    
+            setVendas(vendasComProdutos);
+        } catch (error) {
+            console.error(error);
+            setApiMessage("Erro ao carregar histórico de vendas.");
+        }
+    };
+    
+    
+    
     return (
         <div className="fundoRestrict">
             <Navbar cor="#59291B" />
@@ -233,20 +286,53 @@ function Restrict() {
 
             {/* Seção "Histórico de Vendas" */}
             <section 
-                    id="historico-vendas" 
-                    style={{ maxHeight: activeSection === "historicoVendas" ? "100%" : "10vh", overflow: "hidden", transition: "max-height 0.3s ease-in-out" }}
-                >
-                    <div className="opcao">
-                        <div>
-                            <h2>Histórico de Vendas</h2>
-                            <p>Lista de vendas realizadas.</p><br />
-                        </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none" 
-                            onClick={() => toggleSection("historicoVendas")}>
-                            <path d="M11.1363 4.58197H13.1363V16.582L18.6363 11.082L20.0563 12.502L12.1363 20.422L4.21631 12.502L5.63631 11.082L11.1363 16.582V4.58197Z" fill="black"/>
-                        </svg>
+                id="historico-vendas" 
+                style={{ maxHeight: activeSection === "historicoVendas" ? "100%" : "10vh", overflow: "hidden", transition: "max-height 0.3s ease-in-out" }}
+            >
+                <div className="opcao">
+                    <div>
+                        <h2>Histórico de Vendas</h2>
+                        <p>Lista de vendas realizadas no sistema.</p><br />
                     </div>
-                </section>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none" 
+                        onClick={() => toggleSection("historicoVendas")}>
+                        <path d="M11.1363 4.58197H13.1363V16.582L18.6363 11.082L20.0563 12.502L12.1363 20.422L4.21631 12.502L5.63631 11.082L11.1363 16.582V4.58197Z" fill="black"/>
+                    </svg>
+                </div>
+
+                {apiMessage && <h1>{apiMessage}</h1>}
+
+                <div>
+                    {vendas.length > 0 ? (
+                        <ul>
+                            {vendas.map((venda, index) => (
+                                <li key={index} style={{ fontFamily: "Poppins" }}>
+                                    <strong>ID da Venda:</strong> {venda.id} <br />
+                                    <strong>Produtos:</strong>
+                                    <ul>
+                                        {venda.produtos && venda.produtos.length > 0 ? (
+                                            venda.produtos.map((produto: Produto, i: number) => (
+                                                <li key={i}>
+                                                    ID Produto: {produto.id} - Qtd: {produto.quantidade} - Preço: {produto.preco}
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <p>Sem produtos nessa venda.</p>
+                                        )}
+                                    </ul>
+
+                                    <strong>Quantidade Total:</strong> {venda.quantidade} <br />
+                                    <strong>Data:</strong> {venda.data || "Data não disponível"} <br />
+                                    <hr />
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>Nenhuma venda encontrada.</p>
+                    )}
+                </div>
+
+            </section>
 
             {/* Seção "Atualizar Clientes" */}
             <section 
@@ -301,7 +387,7 @@ function Restrict() {
                                 onChange={(e) => setClienteParaAtualizar({ ...clienteParaAtualizar, senha: e.target.value })}
                                 required
                             />
-                                                   <input
+                            <input
                                 type="datetime-local"
                                 value={clienteParaAtualizar?.data_nascimento?.slice(0, 16) || ""}
                                 onChange={(e) => {

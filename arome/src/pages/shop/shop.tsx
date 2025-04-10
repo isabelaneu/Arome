@@ -43,7 +43,7 @@ function Shop () {
         setModalVisible(true);
         setTimeout(() => {
             setModalVisible(false);
-        }, 2000); // Modal ficará visível por 2 segundos
+        }, 2000);
     };
 
     if (loading) return (

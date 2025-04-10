@@ -7,6 +7,7 @@ function Signup() {
 
     const basePath = "/shop"; 
     const navigate = useNavigate();
+    const [id, setId] = useState('');
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [dataNascimento, setDataNascimento] = useState('');
@@ -24,7 +25,7 @@ function Signup() {
         e.preventDefault();
 
             
-        const cliente = { nome, email, cpf, senha, data_nascimento: dataNascimento };
+        const cliente = { id, nome, email, cpf, senha, data_nascimento: dataNascimento };
    
         console.log(cliente)
 

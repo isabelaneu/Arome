@@ -53,7 +53,7 @@ button:hover {
     margin-top: 10px;
 }
 
-.modal {
+.modal-pay {
     position: fixed;
     top: 0;
     left: 0;
@@ -66,8 +66,8 @@ button:hover {
     z-index: 1000;
 }
 
-.modal-content {
-    background-color: white;
+.modal-content-pay{
+    background-color: bisque;
     padding: 20px;
     border-radius: 8px;
     text-align: center;

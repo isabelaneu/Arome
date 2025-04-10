@@ -29,7 +29,6 @@ function LoginRestrict() {
             <div className="conteudoSingup" style={{alignItems:'center'}}>
                 <div className="container" style={{height:'70%'}}>
                     <h1>Login</h1>
-                    {/* onSubmit chama handleSubmit ao submeter o formulário */}
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="email">Email:</label>

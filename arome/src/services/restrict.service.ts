@@ -20,7 +20,10 @@ export const removerProduto = async (removerNome: string) => {
 
 // Histórico de Vendas
 export const obterHistoricoVendas = async () => {
-    const response = await fetch(`${apiBaseUrl}/vendas/historico`);
+    const response = await fetch(`${apiBaseUrl}/pedidos/listar`);
+    if (!response.ok) {
+        throw new Error("Erro ao obter histórico de vendas.");
+    }
     return response.json();
 };
 

@@ -10,7 +10,7 @@ interface Produto {
     qt_estoque: number;
     descricao: string;
     url_imagem: string;
-    quantidade: number; // Adicionado para controle do carrinho
+    quantidade: number; 
 }
 
 interface CarrinhoContextType {
