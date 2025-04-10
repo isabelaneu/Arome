@@ -42,9 +42,7 @@ function Signup() {
         
             if (response.ok) {
                 alert(responseText);
-        
-                sessionStorage.setItem("cliente", JSON.stringify(cliente));
-                
+                document.cookie = `user=${JSON.stringify(cliente)}; path=/; max-age=${7 * 24 * 60 * 60}`
                 navigate("/home");
             } else {
                 if (responseText.includes("Cliente com este e-mail já existe")) {
@@ -132,6 +130,7 @@ function Signup() {
                             />
                         </div>
                         <button type="submit">Cadastrar</button>
+                        <a href="" style={{fontFamily:"Poppins", color:"#59291B", textAlign:"center", margin:"30%"}} onClick={() => navigate("/login")}>Já sou cadastrado!</a>
                     </form>
                 </div>
     

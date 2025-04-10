@@ -13,7 +13,7 @@ function Carrinho() {
         <div className="fundoCarrinho">
             <NavbarComponent cor="#59291B" />
             <br /><br /><br />
-            <p className="tituloShop">- Seu Carrinho -</p>
+            <p className="tituloShop">Seu Carrinho</p>
             <br /><br />
 
             <div className="backToShop" style={{display: 'flex'}}>
@@ -32,7 +32,9 @@ function Carrinho() {
                     <div className="cardCompra" key={produto.id}>
                         <img src={produto.url_imagem} alt={produto.nome} className="imgCompra"/>
                         <p>{produto.nome} - R$ {(produto.preco*produto.quantidade).toFixed(2)}</p>
+                        
                         <div style={{display:"flex"}}>
+
                             <div className="quantidade">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none" onClick={() => atualizarQuantidade(produto.id, produto.quantidade - 1)} style={{cursor: "pointer"}}>
                                     <path d="M19.0544 13.3947H5.05444V11.3947H19.0544V13.3947Z" fill="#59291B"/>

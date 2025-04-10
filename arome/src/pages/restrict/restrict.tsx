@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import './restrict.css';
 import Navbar from "../../components/navbar/navbar";
-import { adicionarProduto, listarClientes, removerProduto, atualizarCliente } from "../../services/restrict.service";
+import { adicionarProduto, listarClientes, removerProduto, atualizarCliente, listarProdutos } from "../../services/restrict.service";
 
 
 function Restrict() {
     const [activeSection, setActiveSection] = useState<string | null>(null);
-    const [removerNome, setRemoverNome] = useState<string>("");
+    const [removerID, setRemoverID] = useState<string>("");
     const [apiMessage, setApiMessage] = useState<string>("");
     const [clientes, setClientes] = useState<any[]>([]);
+    const [produtos, setProdutos] = useState<any[]>([]);
     const [clienteParaAtualizar, setClienteParaAtualizar] = useState<any>(null);
     const [formData, setFormData] = useState({
         nome: "",
@@ -25,7 +26,10 @@ function Restrict() {
         setActiveSection(newSection);
     
         if (newSection === "vizualizarClientes") {
-            handleSubmitVizualizar();
+            handleSubmitVizualizarClientes();
+        }
+        if (newSection === "vizualizarProdutos") {
+            handleSubmitVizualizarProdutos();
         }
     }
 
@@ -54,7 +58,7 @@ function Restrict() {
     }
     };
 
-    const handleSubmitVizualizar = async () => {
+    const handleSubmitVizualizarClientes = async () => {
         try {
             const data = await listarClientes();
             setClientes(data);
@@ -68,13 +72,27 @@ function Restrict() {
         }
     };
 
+    const handleSubmitVizualizarProdutos = async () => {
+        try {
+            const data = await listarProdutos();
+            setProdutos(data);
+            setTimeout(() => {
+                setActiveSection(null);
+                setApiMessage("");
+            }, 7000);
+        } catch (error) {
+            console.error(error);
+            setApiMessage("Erro ao carregar produtos.");
+        }
+    };
+
     const handleSubmitRemover = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const data = await removerProduto(removerNome); 
-            setApiMessage("Cliente atualizado com sucesso");
+            const data = await removerProduto(removerID); 
+            setApiMessage("Produto removido com sucesso");
 
-            setRemoverNome("");
+            setRemoverID("");
 
             setTimeout(() => {
                 setActiveSection(null);
@@ -88,7 +106,6 @@ function Restrict() {
             setTimeout(() => setApiMessage(""), 7000);
         }
     };
-
 
     const handleSubmitAtualizar = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -112,6 +129,44 @@ function Restrict() {
             <br /><br />
             <main>
 
+            {/* Seção - Vizualizar produtos */}
+            <section 
+                    id="vizualizar-produto" 
+                    style={{ maxHeight: activeSection === "vizualizarProdutos" ? "100%" : "10vh", overflow: "hidden", transition: "max-height 0.3s ease-in-out" }}
+                >
+                    <div className="opcao">
+                        <div>
+                            <h2>Visualizar Produtos</h2>
+                            <p>Lista completa de produtos cadastrados.</p><br />
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none" 
+                            onClick={() => toggleSection("vizualizarProdutos")}>
+                            <path d="M11.1363 4.58197H13.1363V16.582L18.6363 11.082L20.0563 12.502L12.1363 20.422L4.21631 12.502L5.63631 11.082L11.1363 16.582V4.58197Z" fill="black"/>
+                        </svg>
+                    </div>
+
+                    {apiMessage && <h1>{apiMessage}</h1>}
+
+                    <div>
+                        {produtos.length > 0 ? (
+                            <ul>
+                                {produtos.map((produto, index) => (
+                                    <li key={index} style={{fontFamily:"Poppins"}}>
+                                        <strong>Id:</strong> {produto.id} <br />
+                                        <strong>Nome:</strong> {produto.nome} <br />
+                                        <strong>Preço:</strong> {produto.preco} <br />
+                                        <strong>Estoque:</strong> {produto.qt_estoque} <br />
+                                        <hr />
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p>Nenhum produto encontrado.</p>
+                        )}
+                    </div>
+                </section>
+
+
             {/* Seção Adicionar Produto */}
             <section 
                     id="add-produtos" 
@@ -120,7 +175,7 @@ function Restrict() {
                     <div className="opcao">
                         <div>
                             <h2>Adicionar Produtos</h2>
-                            <p>Cadastre novos produtos que estejam em estoque</p><br />
+                            <p>Cadastre novos produtos que estejam em estoque.</p><br />
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none" 
                             onClick={() => toggleSection("addProdutos")}>
@@ -146,14 +201,14 @@ function Restrict() {
                 </section>
 
             {/* Seção Remover Produto*/}
-                <section 
+            <section 
                     id="remover-produtos" 
                     style={{ maxHeight: activeSection === "removerProdutos" ? "100%" : "10vh", overflow: "hidden", transition: "max-height 0.3s ease-in-out" }}
                 >
                     <div className="opcao">
                         <div>
                             <h2>Remover Produtos</h2>
-                            <p>Remova produtos do sistema</p><br />
+                            <p>Remova produtos do sistema.</p><br />
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none" 
                             onClick={() => toggleSection("removerProdutos")}>
@@ -162,12 +217,12 @@ function Restrict() {
                     </div>
                     <form onSubmit={handleSubmitRemover}>
                         <div className="form-group">
-                            <label htmlFor="removerNome">Nome do Produto:</label>
+                            <label htmlFor="removerID">ID do Produto:</label>
                             <input 
                                 type="text" 
-                                id="removerNome" 
-                                value={removerNome} 
-                                onChange={(e) => setRemoverNome(e.target.value)} 
+                                id="removerID" 
+                                value={removerID} 
+                                onChange={(e) => setRemoverID(e.target.value)} 
                                 required 
                             />
                         </div>
@@ -176,8 +231,8 @@ function Restrict() {
                     {apiMessage && <h1>{apiMessage}</h1>}
                 </section>
 
-                {/* Seção "Histórico de Vendas" */}
-                <section 
+            {/* Seção "Histórico de Vendas" */}
+            <section 
                     id="historico-vendas" 
                     style={{ maxHeight: activeSection === "historicoVendas" ? "100%" : "10vh", overflow: "hidden", transition: "max-height 0.3s ease-in-out" }}
                 >
@@ -193,8 +248,8 @@ function Restrict() {
                     </div>
                 </section>
 
-                {/* Seção "Atualizar Clientes" */}
-                <section 
+            {/* Seção "Atualizar Clientes" */}
+            <section 
                     id="atualizar-clientes" 
                     style={{ maxHeight: activeSection === "atualizarCliente" ? "100%" : "10vh", overflow: "hidden", transition: "max-height 0.3s ease-in-out" }}
                 >
@@ -210,57 +265,59 @@ function Restrict() {
                     </div>
 
                     <form onSubmit={handleSubmitAtualizar}>
-                        <input 
-                            type="number" 
-                            placeholder="ID do Cliente" 
-                            value={clienteParaAtualizar?.id || ""} 
-                            onChange={(e) => setClienteParaAtualizar({ ...clienteParaAtualizar, id: Number(e.target.value) })}
-                            required 
-                        />
-                        <input 
-                            type="text" 
-                            placeholder="Nome" 
-                            value={clienteParaAtualizar?.nome || ""} 
-                            onChange={(e) => setClienteParaAtualizar({ ...clienteParaAtualizar, nome: e.target.value })}
-                            required 
-                        />
-                        <input 
-                            type="email" 
-                            placeholder="Email" 
-                            value={clienteParaAtualizar?.email || ""} 
-                            onChange={(e) => setClienteParaAtualizar({ ...clienteParaAtualizar, email: e.target.value })}
-                            required 
-                        />
-                        <input 
-                            type="text" 
-                            placeholder="CPF" 
-                            value={clienteParaAtualizar?.cpf || ""} 
-                            onChange={(e) => setClienteParaAtualizar({ ...clienteParaAtualizar, cpf: e.target.value })}
-                            required 
-                        />
-                        <input 
-                            type="password" 
-                            placeholder="Senha" 
-                            value={clienteParaAtualizar?.senha || ""} 
-                            onChange={(e) => setClienteParaAtualizar({ ...clienteParaAtualizar, senha: e.target.value })}
-                            required 
-                        />
-                       <input 
-                            type="datetime-local" 
-                            value={clienteParaAtualizar?.data_nascimento?.slice(0, 16) || ""} 
-                            onChange={(e) => {
-                                const dateValue = new Date(e.target.value).toISOString();
-                                setClienteParaAtualizar({ ...clienteParaAtualizar, data_nascimento: dateValue });
-                            }}
-                            required 
-                        />
+                        <div className="form-group">
+                            <input
+                                type="number"
+                                placeholder="ID do Cliente"
+                                value={clienteParaAtualizar?.id || ""}
+                                onChange={(e) => setClienteParaAtualizar({ ...clienteParaAtualizar, id: Number(e.target.value) })}
+                                required
+                            />
+                            <input
+                                type="text"
+                                placeholder="Nome"
+                                value={clienteParaAtualizar?.nome || ""}
+                                onChange={(e) => setClienteParaAtualizar({ ...clienteParaAtualizar, nome: e.target.value })}
+                                required
+                            />
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                value={clienteParaAtualizar?.email || ""}
+                                onChange={(e) => setClienteParaAtualizar({ ...clienteParaAtualizar, email: e.target.value })}
+                                required
+                            />
+                            <input
+                                type="text"
+                                placeholder="CPF"
+                                value={clienteParaAtualizar?.cpf || ""}
+                                onChange={(e) => setClienteParaAtualizar({ ...clienteParaAtualizar, cpf: e.target.value })}
+                                required
+                            />
+                            <input
+                                type="password"
+                                placeholder="Senha"
+                                value={clienteParaAtualizar?.senha || ""}
+                                onChange={(e) => setClienteParaAtualizar({ ...clienteParaAtualizar, senha: e.target.value })}
+                                required
+                            />
+                                                   <input
+                                type="datetime-local"
+                                value={clienteParaAtualizar?.data_nascimento?.slice(0, 16) || ""}
+                                onChange={(e) => {
+                                    const dateValue = new Date(e.target.value).toISOString();
+                                    setClienteParaAtualizar({ ...clienteParaAtualizar, data_nascimento: dateValue });
+                                }}
+                                required
+                            />
+                        </div>
                         <button type="submit">Atualizar Cliente</button>
                     </form>
                     {apiMessage && <h1>{apiMessage}</h1>}
                 </section>
 
-                {/* Seção "Vizualizar Clientes" */}
-                <section 
+            {/* Seção "Vizualizar Clientes" */}
+            <section 
                     id="vizualizar-clientes" 
                     style={{ maxHeight: activeSection === "vizualizarClientes" ? "100%" : "10vh", overflow: "hidden", transition: "max-height 0.3s ease-in-out" }}
                 >

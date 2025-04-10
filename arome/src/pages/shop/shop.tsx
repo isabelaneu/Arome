@@ -59,7 +59,7 @@ function Shop () {
         <div className="fundoShop">
             <Navbar cor={"#59291B"}></Navbar>
             <br /><br /><br />
-            <p className="tituloShop">- Nossas Velas -</p>
+            <p className="tituloShop">Nossas Velas</p>
             <br /><br />
 
             <div className="viewCardShop">

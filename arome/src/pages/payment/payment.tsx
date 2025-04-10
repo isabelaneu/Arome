@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import "./payment.css";
 import Navbar from "../../components/navbar/navbar";
 import { useNavigate } from "react-router-dom";
+import { useCarrinho } from "../../contexts/carinho.contexts";
+import Cookies from "js-cookie";
 import qrcode from '../../assets/image.png';
 
 function Payment() {
-    
+    const { carrinho, limparCarrinho } = useCarrinho(); // <- usamos limparCarrinho aqui
+
     const [paymentMethod, setPaymentMethod] = useState("credito");
     const [cardholderName, setCardholderName] = useState("");
     const [cardNumber, setCardNumber] = useState("");
@@ -15,14 +18,47 @@ function Payment() {
     const [modalVisible, setModalVisible] = useState(false);
     const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setModalVisible(true);
-        setTimeout(() => {
-            setModalVisible(false);
-            navigate("/home");
-        }, 4000);
-    };
+    
+        try {
+            const cliente = JSON.parse(Cookies.get("user") || "{}");
+    
+            const pedidos = carrinho.map(produto => ({
+                id_cliente: cliente.id,
+                id_produto: produto.id,
+                valor_total: produto.preco * produto.quantidade,
+                pedido_feito: false
+            }));
+    
+            const response = await fetch("https://arome-backend-1-4j41.onrender.com/pedidos/adicionar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ pedidos }) // <- correto!
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Erro ao registrar pedido:", errorData);
+                throw new Error("Erro ao registrar pedido");
+            }
+    
+            console.log("Pedidos enviados com sucesso:", pedidos);
+            limparCarrinho();
+    
+            setModalVisible(true);
+            setTimeout(() => {
+                setModalVisible(false);
+                navigate("/home");
+            }, 4000);
+    
+        } catch (error) {
+            console.error("Erro no pagamento:", error);
+            alert("Houve um erro ao processar o pagamento.");
+        }
+    };    
 
     return (
         <div>
@@ -129,7 +165,7 @@ function Payment() {
             {modalVisible && (
                 <div className="modal">
                     <div className="modal-content">
-                        <img src="https://media.tenor.com/tVQbHgFJ1t4AAAAj/confirmado.gif" alt="Concluído" className="modal>p"/>
+                        <img src="https://media.tenor.com/tVQbHgFJ1t4AAAAj/confirmado.gif" alt="Concluído" className="modal>p" />
                         <p>Pagamento Concluído!</p>
                     </div>
                 </div>

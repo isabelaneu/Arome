@@ -1,4 +1,4 @@
-export const apiBaseUrl = "https://arome-backend-udit.onrender.com";
+export const apiBaseUrl = "https://arome-backend-1-4j41.onrender.com";
 
 // Adicionar Produto
 export const adicionarProduto = async (produto: any) => {
@@ -48,10 +48,13 @@ export const atualizarCliente = async (id: number, clienteData: any) => {
     return response.text();
 };
 
-
-
 // Visualizar Clientes
 export const listarClientes = async () => {
     const response = await fetch(`${apiBaseUrl}/clientes/listar`);
+    return response.json();
+};
+
+export const listarProdutos = async () => {
+    const response = await fetch(`${apiBaseUrl}/produtos/listar`);
     return response.json();
 };

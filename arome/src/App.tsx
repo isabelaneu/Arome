@@ -11,6 +11,7 @@ import Payment from './pages/payment/payment';
 import LoginRestrict from './pages/loginRestrict/loginRestrict';
 import Restrict from './pages/restrict/restrict';
 import { CarrinhoProvider } from './contexts/carinho.contexts';
+import Login from './pages/login/login';
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
           <Route path='/payment' element={<Payment />} />
           <Route path='/loginRestrict' element={<LoginRestrict />} />
           <Route path='/restrict' element={<Restrict />} />
+          <Route path='/login' element={<Login></Login>} />
+
         </Routes>
       </BrowserRouter>
     </CarrinhoProvider>

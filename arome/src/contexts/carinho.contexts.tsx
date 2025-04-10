@@ -20,6 +20,15 @@ interface CarrinhoContextType {
     atualizarQuantidade: (produtoId: number, quantidade: number) => void;
 }
 
+interface CarrinhoContextType {
+    carrinho: Produto[];
+    adicionarAoCarrinho: (produto: Produto) => void;
+    removerDoCarrinho: (produtoId: number) => void;
+    atualizarQuantidade: (produtoId: number, quantidade: number) => void;
+    limparCarrinho: () => void; // <- aqui
+}
+
+
 const CarrinhoContext = createContext<CarrinhoContextType | undefined>(undefined);
 
 export const CarrinhoProvider = ({ children }: { children: ReactNode }) => {
@@ -49,8 +58,13 @@ export const CarrinhoProvider = ({ children }: { children: ReactNode }) => {
         );
     };
 
+    const limparCarrinho = () => {
+        setCarrinho([]);
+    };
+    
+
     return (
-        <CarrinhoContext.Provider value={{ carrinho, adicionarAoCarrinho, removerDoCarrinho, atualizarQuantidade }}>
+        <CarrinhoContext.Provider value={{ carrinho, adicionarAoCarrinho, removerDoCarrinho, atualizarQuantidade, limparCarrinho }}>
             {children}
         </CarrinhoContext.Provider>
     );
