@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import icon from "../../assets/icon.png";
+import "./navbar.css"
 
 interface NavbarProps {
   cor: string; 
