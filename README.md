@@ -87,7 +87,8 @@ npm install
 npm start
 ```
 
-A aplicação estará disponível em: `http://localhost:3000`
+A aplicação estará disponível em: `http://localhost:3000`\
+Para acessar a área restrita -> user: `admin@email.com` senha: `chulim1*`
 
 ---
 
